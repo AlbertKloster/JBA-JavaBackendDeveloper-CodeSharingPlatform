@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/default.min.css">
+    <style>
+        body {
+            padding: 10px;
+        }
+        textarea {
+            width: 100%;
+            resize: none;
+        }
+        input {
+            color: dimgrey;
+            margin: 8px;
+            outline: 0;
+            border-width: 0 0 1px;
+            border-color: grey;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+        }
+        span, button {
+            color: dimgrey;
+            font-family: 'Red Hat Mono', monospace;
+            font-size: smaller;
+        }
+        button {
+            margin-top: 10px;
+            padding: 4px 8px;
+        }
+    </style>
+</head>
+<body>
+
+<textarea id="code_snippet" placeholder="// write your code here"></textarea>
+<div>
+    <span>Time restriction: </span><input id="time_restriction" type="text" onkeydown="return onlyNumberKey(event)"/>
+</div>
+<div>
+    <span>Views restriction: </span><input id="views_restriction" type="text" onkeydown="return onlyNumberKey(event)"/>
+</div>
+<div>
+    <button id="send_snippet" type="submit" onclick="send()">Submit</button>
+</div>
+
+<script>
+    const code_snippet = document.getElementById("code_snippet");
+    const time_restriction = document.getElementById("time_restriction");
+    const views_restriction = document.getElementById("views_restriction");
+    code_snippet.setAttribute(
+        "style", "height:" + (code_snippet.scrollHeight) + "px;overflow-y:hidden;"
+    );
+    code_snippet.addEventListener("input", OnInput, false);
+
+    function OnInput() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    }
+
+    function send() {
+        let object = {
+            "code": code_snippet.value,
+            "time": parseInt(time_restriction.value),
+            "views": parseInt(views_restriction.value)
+        };
+
+        let json = JSON.stringify(object);
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", '/api/code/new', false);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(json);
+
+        if (xhr.status === 200) {
+            alert("Success!");
+        }
+    }
+
+    function onlyNumberKey(event) {
+        const ASCIICode = (event.which) ? event.which : event.keyCode;
+        return !(ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57));
+    }
+</script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+</body>
+</html>

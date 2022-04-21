@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Latest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/default.min.css">
+</head>
+<body>
+
+<div th:each="codeSnippet: ${list}">
+    <span id="load_date" style="font-family: 'Red Hat Mono', monospace;
+    font-size: small;
+    color: forestgreen;
+    margin-left: 10px;" th:text="${codeSnippet.getDate()}"></span>
+    <pre id="code_snippet" style="margin: 0 10px 10px 10px;"><code th:text="${codeSnippet.getCode()}"></code></pre>
+</div>
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
